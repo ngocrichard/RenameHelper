@@ -1,0 +1,10 @@
+﻿<Application x:Class="RenameHelper.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:RenameHelper"
+             xmlns:core="clr-namespace:RenameHelper.Core"
+             StartupUri="Views/MainView.xaml">
+    <Application.Resources>
+        <core:NinjectService x:Key="NinjectContainer"/>
+    </Application.Resources>
+</Application>

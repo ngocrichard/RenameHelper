@@ -1,0 +1,321 @@
+﻿<Window x:Class="RenameHelper.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RenameHelper.Views"
+        xmlns:cv="clr-namespace:RenameHelper.Views.Converters"
+        mc:Ignorable="d"
+        Title="Rename Helper" Height="400" Width="650"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        DataContext="{Binding MainViewModel, Source={StaticResource NinjectContainer}}">
+    <Window.Resources>
+        <!-- Converters -->
+        <cv:IndexPlacementToBoolean x:Key="IndexPlacementToBoolean"/>
+        <cv:InvertBoolean x:Key="InvertBoolean"/>
+        
+        <!-- Basic styles -->
+        <Style TargetType="{x:Type Border}">
+            <Setter Property="Padding" Value="5,5,5,5"/>
+            <Setter Property="Margin" Value="0,0,0,0"/>
+        </Style>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="10,5,10,5"/>
+            <Setter Property="Margin" Value="0,0,0,0"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Padding" Value="5,5,5,5"/>
+            <Setter Property="Margin" Value="0,0,0,0"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Padding" Value="5,5,5,5"/>
+            <Setter Property="Margin" Value="0,0,0,0"/>
+        </Style>
+
+        <!-- Validate style -->
+        <Style x:Key="validateTextBoxTemplate" TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Background" Value="LightPink"/>
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                    Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- Bottom buttons -->
+        <Style x:Key="bottomButtons" TargetType="{x:Type Button}"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="70"/>
+        </Style>
+
+        <!-- Disable triggers -->
+        <Style x:Key="disableRenameButton" TargetType="Button"
+               BasedOn="{StaticResource bottomButtons}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ElementName=tboxName,
+                             Path=(Validation.HasError)}" Value="True"/>
+                        <Condition Binding="{Binding ElementName=cbKeepCurrentName,
+                                   Path=IsChecked, Mode=OneWay}" Value="False"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </MultiDataTrigger>
+
+                <DataTrigger Binding="{Binding ElementName=tboxStartIndex,
+                             Path=(Validation.HasError)}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding ElementName=tboxCounter,
+                             Path=(Validation.HasError)}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding ElementName=tBoxDirectory,
+                             Path=Text.Length}" Value="0">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="disableUndoButton" TargetType="Button"
+               BasedOn="{StaticResource bottomButtons}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding History.Count, Mode=OneWay}" Value="0">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="disableFormatTextBox" TargetType="TextBox"
+               BasedOn="{StaticResource validateTextBoxTemplate}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=cbKeepCurrentName,
+                             Path=IsChecked, Mode=OneWay}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Background" Value="LightGray"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <!-- Layout -->
+    <Grid Margin="3,3,3,3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            
+            <Border Grid.Column="0">
+                <Button Content="Select files"
+                        Command="{Binding SelectFilesCmd}"/>
+            </Border>
+
+            <Border Grid.Column="1">
+                <TextBox x:Name="tBoxDirectory"
+                         IsReadOnly="True"
+                         Text="{Binding CurrentDirectory, Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0">
+                <Grid>
+                    <ListView x:Name="lvFiles"
+                              ItemsSource="{Binding CurrentFiles, Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}"
+                              DisplayMemberPath="Name">
+                    </ListView>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Border>
+                        <StackPanel Orientation="Vertical">
+                            <GroupBox Header="Options">
+                                <StackPanel Orientation="Vertical">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Grid.Column="0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <CheckBox x:Name="cbKeepCurrentName"
+                                                          VerticalAlignment="Center"
+                                                          IsChecked="{Binding Mode.KeepCurrentName, Mode=TwoWay}"/>
+                                                <TextBlock Text="Keep current name"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border Grid.Column="1">
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <CheckBox VerticalAlignment="Center"
+                                                          IsChecked="{Binding Mode.IsRomanNumeral, Mode=TwoWay}"/>
+                                                <TextBlock Text="Roman numerals"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+
+                                    <GroupBox Header="Index placement">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="145"/>
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0">
+                                                <RadioButton GroupName="IndexPlacement"
+                                                             Content="Prefix"
+                                                             IsChecked="{Binding Mode.IndexMode, Mode=TwoWay,
+                                                                         Converter={StaticResource IndexPlacementToBoolean},
+                                                                         ConverterParameter=Prefix}"/>
+                                            </Border>
+
+                                            <Border Grid.Column="1">
+                                                <RadioButton GroupName="IndexPlacement"
+                                                             Content="Postfix"
+                                                             IsChecked="{Binding Mode.IndexMode, Mode=TwoWay,
+                                                                         Converter={StaticResource IndexPlacementToBoolean},
+                                                                         ConverterParameter=Postfix}"/>
+                                            </Border>
+                                        </Grid>
+                                    </GroupBox>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Info">
+                                <StackPanel Orientation="Vertical">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Grid.Row="0" Grid.Column="0">
+                                            <TextBlock Text="Name"/>
+                                        </Border>
+                                        <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+                                            <TextBox x:Name="tboxName"
+                                                     Text="{Binding Data.Name, Mode=TwoWay,
+                                                            UpdateSourceTrigger=PropertyChanged,
+                                                            ValidatesOnDataErrors=True}">
+                                                <TextBox.Style>
+                                                    <Style TargetType="{x:Type TextBox}"
+                                                           BasedOn="{StaticResource disableFormatTextBox}"/>
+                                                </TextBox.Style>
+                                            </TextBox>
+                                        </Border>
+
+                                        <Border Grid.Row="1" Grid.Column="0">
+                                            <TextBlock Text="Start"/>
+                                        </Border>
+                                        <Border Grid.Row="1" Grid.Column="1">
+                                            <StackPanel Orientation="Horizontal">
+
+                                                <TextBox x:Name="tboxStartIndex"
+                                                         Grid.Column="0"
+                                                         Width="50"
+                                                         HorizontalAlignment="Left"
+                                                         Text="{Binding Data.StartIndex, Mode=TwoWay,
+                                                                UpdateSourceTrigger=PropertyChanged,
+                                                                ValidatesOnDataErrors=True}">
+                                                    <TextBox.Style>
+                                                        <Style TargetType="{x:Type TextBox}"
+                                                               BasedOn="{StaticResource validateTextBoxTemplate}"/>
+                                                    </TextBox.Style>
+                                                </TextBox>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Step"/>
+                                                <TextBox x:Name="tboxCounter"
+                                                         Width="50" HorizontalAlignment="Left"
+                                                         Text="{Binding Data.Step, Mode=TwoWay,
+                                                                UpdateSourceTrigger=PropertyChanged,
+                                                                ValidatesOnDataErrors=True}">
+                                                    <TextBox.Style>
+                                                        <Style TargetType="{x:Type TextBox}"
+                                                               BasedOn="{StaticResource validateTextBoxTemplate}"/>
+                                                    </TextBox.Style>
+                                                </TextBox>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <Grid Margin="0,10,0,0">
+                                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                                            HorizontalAlignment="Right">
+                                    <Border>
+                                        <Button x:Name="btnRename" Content="Rename"
+                                                Command="{Binding RenameCmd}">
+                                            <Button.Style>
+                                                <Style TargetType="{x:Type Button}"
+                                                       BasedOn="{StaticResource disableRenameButton}"/>
+                                            </Button.Style>
+                                        </Button>
+                                    </Border>
+                                    <Border>
+                                        <Button x:Name="btnUndo" Content="Undo"
+                                                Command="{Binding UndoCmd}">
+                                            <Button.Style>
+                                                <Style TargetType="{x:Type Button}"
+                                                       BasedOn="{StaticResource disableUndoButton}"/>
+                                            </Button.Style>
+                                        </Button>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <Button Content="Credit"
+                                                HorizontalAlignment="Right"
+                                                Command="{Binding CreditCmd}">
+                                            <Button.Style>
+                                                <Style TargetType="{x:Type Button}"
+                                                       BasedOn="{StaticResource bottomButtons}"/>
+                                            </Button.Style>
+                                        </Button>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
