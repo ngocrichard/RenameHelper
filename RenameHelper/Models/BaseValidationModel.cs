@@ -5,16 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PropertyChanged;
+
 namespace RenameHelper.Models
 {
     public delegate string ValidatePropertyHandler(object senderModel, string propertyName);
 
-    public abstract class BaseValidationModel : BaseObservable, IDataErrorInfo
+    public abstract class BaseValidationModel : INotifyPropertyChanged, IDataErrorInfo
     {
         /// Use this event to register validation
         public event ValidatePropertyHandler OnValidateProperty;
 
         #region Implement IDataErrorInfo
+        [DoNotNotify]
         public string Error { get; protected set; }
 
         public string this[string propertyName]
@@ -32,5 +35,6 @@ namespace RenameHelper.Models
         }
         #endregion
 
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

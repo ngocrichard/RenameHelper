@@ -6,6 +6,6 @@ namespace RenameHelper.BusinessLogics.Services
 {
     public interface IRenameService
     {
-        CommittedChange Rename(string directory, ObservableCollection<MyFile> currentFiles, RequestData data, RequestMode mode);
+        CommittedChange Rename(string directory, ObservableCollection<MyFile> currentFiles, BasicRequestData data, BasicRequestMode mode);
     }
 }

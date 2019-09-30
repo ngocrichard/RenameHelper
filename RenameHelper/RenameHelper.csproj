@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\PropertyChanged.Fody.3.1.3\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.3.1.3\build\PropertyChanged.Fody.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -14,6 +15,8 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,8 +41,13 @@
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="PropertyChanged, Version=3.1.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.3.1.3\lib\net40\PropertyChanged.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -81,23 +89,33 @@
     <Compile Include="BusinessLogics\Services\RenameService.cs" />
     <Compile Include="BusinessLogics\Services\SelectFilesService.cs" />
     <Compile Include="BusinessLogics\Services\UndoService.cs" />
-    <Compile Include="Commons\BaseObservable.cs" />
     <Compile Include="Commons\Enums\IndexPlacement.cs" />
     <Compile Include="Commons\Enums\RenameErrorInfo.cs" />
     <Compile Include="Commons\Exceptions\RenameErrorException.cs" />
-    <Compile Include="Models\BaseValidationModel.cs" />
     <Compile Include="Commons\IGetCopy.cs" />
+    <Compile Include="Core\IContainer.cs" />
+    <Compile Include="Models\BaseObservable.cs" />
+    <Compile Include="Models\BaseValidationModel.cs" />
     <Compile Include="Commons\ISetCopy.cs" />
     <Compile Include="Commons\RelayCommand.cs" />
-    <Compile Include="Core\NinjectService.cs" />
+    <Compile Include="Core\NinjectContainer.cs" />
     <Compile Include="Models\MyFile.cs" />
     <Compile Include="Models\CommitedChange.cs" />
-    <Compile Include="Models\RequestData.cs" />
-    <Compile Include="Models\RequestMode.cs" />
+    <Compile Include="Models\BasicRequestData.cs" />
+    <Compile Include="Models\BasicRequestMode.cs" />
+    <Compile Include="ViewModels\AdvancedTabViewModel.cs" />
+    <Compile Include="ViewModels\BasicTabViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Validations\BaseValidation.cs" />
     <Compile Include="ViewModels\Validations\RequestDataValidation.cs" />
     <Compile Include="ViewModels\Validations\ValidationFacade.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\AdvancedTabView.xaml.cs">
+      <DependentUpon>AdvancedTabView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BasicTabView.xaml.cs">
+      <DependentUpon>BasicTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Converters\InvertBoolean.cs" />
     <Compile Include="Views\Converters\IndexPlacementToBoolean.cs" />
     <Compile Include="Views\MainView.xaml.cs">
@@ -132,6 +150,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\AdvancedTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BasicTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -139,4 +165,12 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.0\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.6.0.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.0.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.1.3\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.1.3\build\PropertyChanged.Fody.props'))" />
+  </Target>
 </Project>

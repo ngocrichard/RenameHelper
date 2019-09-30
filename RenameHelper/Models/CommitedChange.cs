@@ -12,13 +12,13 @@ namespace RenameHelper.Models
         public string Directory { get; set; }
         public List<string> OldFileNames { get; set; }
         public List<string> NewFileNames { get; set; }
-        public RequestData Data { get; set; }
-        public RequestMode Mode { get; set; }
+        public BasicRequestData Data { get; set; }
+        public BasicRequestMode Mode { get; set; }
         #endregion
 
         #region Constructors
         public CommittedChange(string directory, List<string> oldFileNames, List<string> newFileNames,
-            RequestData data, RequestMode mode)
+            BasicRequestData data, BasicRequestMode mode)
         {
             Directory = directory;
             OldFileNames = oldFileNames;

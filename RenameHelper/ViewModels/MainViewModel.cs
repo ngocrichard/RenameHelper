@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,64 +18,35 @@ namespace RenameHelper.ViewModels
         #region Fields
         private const string SUCCESS_CAPTION = "Congratulation!";
         private const string ERROR_CAPTION = "Error!";
-
-        private string currentDirectory;
-        private ObservableCollection<MyFile> currentFiles;
-        private RequestMode mode;
         #endregion
 
         #region Properties
-        public ObservableCollection<MyFile> CurrentFiles
-        {
-            get => currentFiles;
-            set
-            {
-                currentFiles = value;
-                RaisePropertyChanged();
-            }
-        }
+        public ObservableCollection<MyFile> CurrentFiles { get; set; }
 
-        public string CurrentDirectory
-        {
-            get => currentDirectory;
-            set
-            {
-                currentDirectory = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public RequestMode Mode
-        {
-            get => mode;
-            set
-            {
-                mode = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public RequestData Data { get; }
+        public string CurrentDirectory { get; set; }
         public Stack<CommittedChange> History { get; }
         #endregion
 
         #region Dependencies
+        public BasicTabViewModel BasicTabViewModel { get; }
+        public AdvancedTabViewModel AdvancedTabViewModel { get; }
         private readonly ClientServiceFacade clientServices;
         private readonly ValidationFacade validations;
         #endregion
 
         #region Constructor
-        public MainViewModel(ClientServiceFacade clientServices, ValidationFacade validations)
+        public MainViewModel(ClientServiceFacade clientServices, ValidationFacade validations,
+            BasicTabViewModel basicTabViewModel, AdvancedTabViewModel advancedTabViewModel)
         {
             /// Inject dependencies
+            this.BasicTabViewModel = basicTabViewModel;
+            this.AdvancedTabViewModel = advancedTabViewModel;
             this.clientServices = clientServices;
             this.validations = validations;
 
             /// Initialize properties
             CurrentFiles = new ObservableCollection<MyFile>();
             History = new Stack<CommittedChange>();
-            Data = new RequestData("", 1, 1);
-            Mode = new RequestMode(false, true, IndexPlacement.Prefix);
 
             RegisterValidations();
             ImplementsCommands();
@@ -83,7 +55,7 @@ namespace RenameHelper.ViewModels
         /// Register validation for properties
         private void RegisterValidations()
         {
-            Data.OnValidateProperty += this.validations.RequestData.Validation;
+            
         }
 
         /// Implement commands for binding
@@ -113,7 +85,8 @@ namespace RenameHelper.ViewModels
         {
             try
             {
-                var commitedChange = clientServices.Rename.Rename(CurrentDirectory, CurrentFiles, Data, Mode);
+                var commitedChange = clientServices.Rename.Rename(CurrentDirectory, CurrentFiles,
+                    BasicTabViewModel.Data, BasicTabViewModel.Mode);
                 // Save request to history if successfully
                 History.Push(commitedChange);
                 // Update state
@@ -144,8 +117,8 @@ namespace RenameHelper.ViewModels
                 clientServices.Undo.Undo(CurrentFiles, lastChange);
                 // Restore state if success
                 CurrentDirectory = lastChange.Directory;
-                Mode = lastChange.Mode;
-                Data.SetCopy(lastChange.Data);
+                BasicTabViewModel.Mode = lastChange.Mode;
+                BasicTabViewModel.Data.SetCopy(lastChange.Data);
                 clientServices.MessageBox.Show("Undo successfully!", SUCCESS_CAPTION);
             }
             catch (RenameErrorException exception)

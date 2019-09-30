@@ -13,7 +13,7 @@ namespace RenameHelper.ViewModels.Validations
     {
         public override string Validation(object senderModel, string propertyName)
         {
-            var model = senderModel as RequestData;
+            var model = senderModel as BasicRequestData;
             switch (propertyName)
             {
                 case "Name":

@@ -10,22 +10,29 @@ using RenameHelper.BusinessLogics.Services;
 
 namespace RenameHelper.Core
 {
-    public class NinjectService
+    public class NinjectContainer : IContainer
     {
-        #region Kernel
-        private readonly IKernel kernel;
+        #region Properties
+        private IKernel kernel { get; }
         #endregion
 
         #region Constructor
-        public NinjectService()
+        public NinjectContainer()
         {
             kernel = new StandardKernel();
             Binding();
         }
         #endregion
 
+        #region Implement IContainer
+        public T Get<T>()
+        {
+            return kernel.Get<T>();
+        }
+        #endregion
+
         #region Binding dependencies
-        void Binding()
+        private void Binding()
         {
             /* 
              * Binding dependencies here.
@@ -37,13 +44,6 @@ namespace RenameHelper.Core
             kernel.Bind<IUndoService>().To<UndoService>();
             kernel.Bind<ICreditService>().To<CreditService>();
             kernel.Bind<IMessageBoxService>().To<MessageBoxService>();
-        }
-        #endregion
-
-        #region Create property for ViewModels
-        public MainViewModel MainViewModel
-        {
-            get => kernel.Get<MainViewModel>();
         }
         #endregion
     }

@@ -25,7 +25,7 @@ namespace RenameHelper.BusinessLogics.Services
         }
 
         public CommittedChange Rename(string directory, ObservableCollection<MyFile> currentFiles,
-            RequestData data, RequestMode mode)
+            BasicRequestData data, BasicRequestMode mode)
         {
             var currentFileNames = currentFiles.Select(file => file.Name).ToList();
             // Process request
@@ -45,7 +45,7 @@ namespace RenameHelper.BusinessLogics.Services
         }
 
         public List<string> GetNewFileNames(string directory, ObservableCollection<MyFile> currentFiles,
-            RequestData data, RequestMode mode)
+            BasicRequestData data, BasicRequestMode mode)
         {
             var newFileNames = new List<string>();
             int idx = data.StartIndex;

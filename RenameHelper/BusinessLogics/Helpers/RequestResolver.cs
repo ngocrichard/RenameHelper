@@ -21,7 +21,7 @@ namespace RenameHelper.BusinessLogics.Helpers
             this.romanNumeral = romanNumeral;
         }
 
-        public string GetNewName(string oldName, int index, string newNameNotResolved, RequestMode mode)
+        public string GetNewName(string oldName, int index, string newNameNotResolved, BasicRequestMode mode)
         {
             // Resolve Roman numeral index
             string idxStr = mode.IsRomanNumeral ? romanNumeral.GetValue(index) : index.ToString();
