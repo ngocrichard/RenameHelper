@@ -42,7 +42,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <CheckBox x:Name="cbKeepCurrentName"
                                           VerticalAlignment="Center"
-                                          IsChecked="{Binding Mode.Value.KeepCurrentName, Mode=TwoWay}"/>
+                                          IsChecked="{Binding Mode.KeepCurrentName, Mode=TwoWay}"/>
                                     <TextBlock Text="Keep current name"/>
                                 </StackPanel>
                             </Border>
@@ -50,7 +50,7 @@
                             <Border Grid.Column="1">
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                                     <CheckBox VerticalAlignment="Center"
-                                          IsChecked="{Binding Mode.Value.IsRomanNumeral, Mode=TwoWay}"/>
+                                          IsChecked="{Binding Mode.IsRomanNumeral, Mode=TwoWay}"/>
                                     <TextBlock Text="Roman numerals"/>
                                 </StackPanel>
                             </Border>
@@ -70,7 +70,7 @@
                         <Border Grid.Column="0">
                             <RadioButton GroupName="IndexPlacement"
                                      Content="Prefix"
-                                     IsChecked="{Binding Mode.Value.IndexMode, Mode=TwoWay,
+                                     IsChecked="{Binding Mode.IndexMode, Mode=TwoWay,
                                                  Converter={StaticResource IndexPlacementToBoolean},
                                                  ConverterParameter=Prefix}"/>
                         </Border>
@@ -78,7 +78,7 @@
                         <Border Grid.Column="1">
                             <RadioButton GroupName="IndexPlacement"
                                      Content="Postfix"
-                                     IsChecked="{Binding Mode.Value.IndexMode, Mode=TwoWay,
+                                     IsChecked="{Binding Mode.IndexMode, Mode=TwoWay,
                                                  Converter={StaticResource IndexPlacementToBoolean},
                                                  ConverterParameter=Postfix}"/>
                         </Border>
