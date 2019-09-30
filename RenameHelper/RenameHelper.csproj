@@ -94,8 +94,8 @@
     <Compile Include="Commons\Exceptions\RenameErrorException.cs" />
     <Compile Include="Commons\IGetCopy.cs" />
     <Compile Include="Core\IContainer.cs" />
-    <Compile Include="Models\BaseObservable.cs" />
-    <Compile Include="Models\BaseValidationModel.cs" />
+    <Compile Include="Commons\BaseObservable.cs" />
+    <Compile Include="Commons\BaseValid.cs" />
     <Compile Include="Commons\ISetCopy.cs" />
     <Compile Include="Commons\RelayCommand.cs" />
     <Compile Include="Core\NinjectContainer.cs" />

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RenameHelper.Models
 {
-    public class BasicRequestMode : INotifyPropertyChanged, IGetCopy<BasicRequestMode>
+    public class BasicRequestMode : BaseObservable, IGetCopy<BasicRequestMode>
     {
         #region Properties
         public bool IsRomanNumeral { get; set; }
@@ -32,7 +32,5 @@ namespace RenameHelper.Models
             return new BasicRequestMode(IsRomanNumeral, KeepCurrentName, IndexMode);
         }
         #endregion
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

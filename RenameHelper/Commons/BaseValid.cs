@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 using PropertyChanged;
 
-namespace RenameHelper.Models
+namespace RenameHelper
 {
+    /// This delagate is declared for registering validation methods
     public delegate string ValidatePropertyHandler(object senderModel, string propertyName);
 
-    public abstract class BaseValidationModel : INotifyPropertyChanged, IDataErrorInfo
+    public abstract class BaseValid : BaseObservable, IDataErrorInfo
     {
         /// Use this event to register validation
         public event ValidatePropertyHandler OnValidateProperty;
@@ -34,7 +35,5 @@ namespace RenameHelper.Models
             return OnValidateProperty?.Invoke(this, propertyName);
         }
         #endregion
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

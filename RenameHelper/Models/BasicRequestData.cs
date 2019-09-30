@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RenameHelper.Models
 {
-    public class BasicRequestData : BaseValidationModel, ISetCopy<BasicRequestData>, IGetCopy<BasicRequestData>
+    public class BasicRequestData : BaseValid, ISetCopy<BasicRequestData>, IGetCopy<BasicRequestData>
     {
         #region Properties
         public string Name { get; set; }

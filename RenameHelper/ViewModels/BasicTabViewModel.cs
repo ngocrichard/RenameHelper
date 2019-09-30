@@ -9,7 +9,7 @@ using RenameHelper.ViewModels.Validations;
 
 namespace RenameHelper.ViewModels
 {
-    public class BasicTabViewModel : BaseObservable
+    public class BasicTabViewModel : BaseValid
     {
         #region Fields
         private BasicRequestMode mode;

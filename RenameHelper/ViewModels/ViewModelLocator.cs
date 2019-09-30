@@ -10,18 +10,27 @@ namespace RenameHelper.ViewModels
 {
     public class ViewModelLocator
     {
+        #region Fields
         private readonly NinjectContainer container;
-        private readonly MainViewModel mainViewModel;
+        private MainViewModel mainViewModel;
+        #endregion
 
+        #region Constructors
         public ViewModelLocator()
         {
             container = new NinjectContainer();
-            mainViewModel = container.Get<MainViewModel>();
         }
+        #endregion
 
+        #region Locate ViewModels
         public MainViewModel MainViewModel
         {
-            get => mainViewModel;
+            get
+            {
+                if (mainViewModel == null)
+                    mainViewModel = container.Get<MainViewModel>();
+                return mainViewModel;
+            }
         }
 
         public BasicTabViewModel BasicTabViewModel
@@ -33,5 +42,6 @@ namespace RenameHelper.ViewModels
         {
             get => mainViewModel.AdvancedTabViewModel;
         }
+        #endregion
     }
 }

@@ -13,7 +13,7 @@ using RenameHelper.ViewModels.Validations;
 
 namespace RenameHelper.ViewModels
 {
-    public class MainViewModel : BaseObservable
+    public class MainViewModel : BaseValid
     {
         #region Fields
         private const string SUCCESS_CAPTION = "Congratulation!";

@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace RenameHelper
 {
+    /*
+     * Extend this class instead of directly implementing INotifyPropertyChanged.
+     * Even with the help from package, sometimes we have to raise the event ourselves.
+     */
     public abstract class BaseObservable : INotifyPropertyChanged
     {
         /// Use this method to notify property changed
