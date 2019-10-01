@@ -22,16 +22,6 @@
                BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Width" Value="70"/>
         </Style>
-
-        <!-- Disable triggers -->
-        <Style x:Key="btnUndo" TargetType="Button"
-               BasedOn="{StaticResource bottomButtons}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding History.Count, Mode=OneWay}" Value="0">
-                    <Setter Property="IsEnabled" Value="False"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
     </Window.Resources>
 
     <!-- Layout -->
@@ -108,7 +98,7 @@
                                     <Border>
                                         <Button x:Name="btnUndo" Content="Undo"
                                                 Command="{Binding UndoCmd}"
-                                                Style="{StaticResource btnUndo}"/>
+                                                Style="{StaticResource bottomButtons}"/>
                                     </Border>
                                     <Border Grid.Column="1">
                                         <Button Content="Credit"

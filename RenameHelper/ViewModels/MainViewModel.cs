@@ -21,8 +21,8 @@ namespace RenameHelper.ViewModels
         #endregion
 
         #region Properties
+        public RenameStatus Status { get; set; }
         public ObservableCollection<MyFile> CurrentFiles { get; set; }
-
         public string CurrentDirectory { get; set; }
         public Stack<CommittedChange> History { get; }
         #endregion
@@ -45,6 +45,7 @@ namespace RenameHelper.ViewModels
             this.validations = validations;
 
             /// Initialize properties
+            Status = basicTabViewModel.Status;
             CurrentFiles = new ObservableCollection<MyFile>();
             History = new Stack<CommittedChange>();
 
@@ -62,9 +63,9 @@ namespace RenameHelper.ViewModels
         private void ImplementsCommands()
         {
             SelectFilesCmd = new RelayCommand<object>(SelectFilesExcute);
-            RenameCmd = new RelayCommand<object>(RenameExcute);
-            UndoCmd = new RelayCommand<object>(UndoExcute);
-            CreditCmd = new RelayCommand<object>(ShowCreditExcute);
+            RenameCmd = new RelayCommand<object>(RenameExcute, CanRename);
+            UndoCmd = new RelayCommand<object>(UndoExcute, obj => History.Count > 0);
+            CreditCmd = new RelayCommand<object>(CreditExcute);
         }
         #endregion
 
@@ -74,13 +75,16 @@ namespace RenameHelper.ViewModels
         public ICommand UndoCmd { get; set; }
         public ICommand CreditCmd { get; set; }
 
+        #region Select files command
         private void SelectFilesExcute(object obj)
         {
             string newDirectory = clientServices.SelectFiles.SelectFiles(CurrentFiles);
             if (!string.IsNullOrEmpty(newDirectory))
                 CurrentDirectory = newDirectory;
         }
+        #endregion
 
+        #region Rename command
         private void RenameExcute(object obj)
         {
             try
@@ -106,6 +110,13 @@ namespace RenameHelper.ViewModels
             }
         }
 
+        private bool CanRename(object obj)
+        {
+            return !string.IsNullOrEmpty(CurrentDirectory) && Status.CanRename;
+        }
+        #endregion
+
+        #region Undo command
         private void UndoExcute(object obj)
         {
             if (History.Count == 0)
@@ -118,7 +129,7 @@ namespace RenameHelper.ViewModels
                 // Restore state if success
                 CurrentDirectory = lastChange.Directory;
                 BasicTabViewModel.Mode = lastChange.Mode;
-                BasicTabViewModel.Data.SetCopy(lastChange.Data);
+                BasicTabViewModel.Data = lastChange.Data;
                 clientServices.MessageBox.Show("Undo successfully!", SUCCESS_CAPTION);
             }
             catch (RenameErrorException exception)
@@ -135,11 +146,15 @@ namespace RenameHelper.ViewModels
                 RaisePropertyChanged("History");
             }
         }
+        #endregion
 
-        private void ShowCreditExcute(object obj)
+        #region Credit command
+        private void CreditExcute(object obj)
         {
             clientServices.Credit.ShowCredit();
         }
+        #endregion
+
         #endregion
     }
 }

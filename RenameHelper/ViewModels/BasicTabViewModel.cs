@@ -12,21 +12,36 @@ namespace RenameHelper.ViewModels
     public class BasicTabViewModel : BaseValid
     {
         #region Fields
-        private BasicRequestMode mode;
+        private BasicRequestData data;
         #endregion
 
         #region Properties
-        public BasicRequestMode Mode
+        public RenameStatus Status;
+        public string Name { get; set; }
+        public string StartIndexStr { get; set; }
+        public string StepStr { get; set; }
+        public BasicRequestMode Mode { get; set; }
+        public BasicRequestData Data
         {
-            get => mode;
+            get
+            {
+                try
+                {
+                    data.Name = Name;
+                    data.StartIndex = int.Parse(StartIndexStr);
+                    data.Step = int.Parse(StepStr);
+                }
+                catch (Exception) { }
+                return data;
+            }
             set
             {
-                mode = value;
-                RaisePropertyChanged();
+                data = value;
+                Name = data.Name;
+                StartIndexStr = data.StartIndex.ToString();
+                StepStr = data.Step.ToString();
             }
         }
-
-        public BasicRequestData Data { get; }
         #endregion
 
         #region Dependencies
@@ -40,6 +55,7 @@ namespace RenameHelper.ViewModels
             this.validations = validations;
 
             /// Initialize properties
+            Status = new RenameStatus();
             Data = new BasicRequestData("", 1, 1);
             Mode = new BasicRequestMode(false, true, IndexPlacement.Prefix);
 
@@ -49,7 +65,7 @@ namespace RenameHelper.ViewModels
         /// Register validation for properties
         private void RegisterValidations()
         {
-            Data.OnValidateProperty += this.validations.RequestData.Validation;
+            OnValidateProperty += this.validations.RequestData.Validation;
         }
         #endregion
     }

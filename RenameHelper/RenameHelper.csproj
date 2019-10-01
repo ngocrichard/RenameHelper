@@ -99,6 +99,7 @@
     <Compile Include="Commons\ISetCopy.cs" />
     <Compile Include="Commons\RelayCommand.cs" />
     <Compile Include="Core\NinjectContainer.cs" />
+    <Compile Include="Models\CanRenameWrapper.cs" />
     <Compile Include="Models\MyFile.cs" />
     <Compile Include="Models\CommitedChange.cs" />
     <Compile Include="Models\BasicRequestData.cs" />
@@ -106,9 +107,11 @@
     <Compile Include="ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="ViewModels\BasicTabViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\Validations\BaseValidation.cs" />
-    <Compile Include="ViewModels\Validations\RequestDataValidation.cs" />
+    <Compile Include="ViewModels\Validations\BasePropertyValidation.cs" />
+    <Compile Include="ViewModels\Validations\BasicTabValidate.cs" />
+    <Compile Include="ViewModels\Validations\StringToIntValidation.cs" />
     <Compile Include="ViewModels\Validations\ValidationFacade.cs" />
+    <Compile Include="ViewModels\Validations\ValidationMessages.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\AdvancedTabView.xaml.cs">
       <DependentUpon>AdvancedTabView.xaml</DependentUpon>

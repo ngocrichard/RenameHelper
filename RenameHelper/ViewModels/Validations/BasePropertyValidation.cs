@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RenameHelper.ViewModels.Validations
 {
-    public abstract class BaseValidation
+    public abstract class BasePropertyValidation
     {
         /// Validate model in this method
         public abstract string Validation(object model, string propertyName);

@@ -12,9 +12,7 @@ namespace RenameHelper.Models
     {
         #region Properties
         public string Name { get; set; }
-
         public int StartIndex { get; set; }
-
         public int Step { get; set; }
         #endregion
 

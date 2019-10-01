@@ -9,11 +9,11 @@ namespace RenameHelper.ViewModels.Validations
     public class ValidationFacade
     {
         #region Validations
-        public RequestDataValidation RequestData { get; }
+        public BasicTabValidate RequestData { get; }
         #endregion
 
         #region Constructor
-        public ValidationFacade(RequestDataValidation requestData)
+        public ValidationFacade(BasicTabValidate requestData)
         {
             RequestData = requestData;
         }
