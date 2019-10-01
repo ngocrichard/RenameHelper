@@ -17,10 +17,10 @@ namespace RenameHelper.ViewModels
 
         #region Properties
         public RenameStatus Status;
-        public BasicRequestMode Mode { get; set; }
         public string Name { get; set; }
         public string StartIndexStr { get; set; }
         public string StepStr { get; set; }
+        public BasicRequestMode Mode { get; set; }
         public BasicRequestData Data
         {
             get
@@ -31,10 +31,7 @@ namespace RenameHelper.ViewModels
                     data.StartIndex = int.Parse(StartIndexStr);
                     data.Step = int.Parse(StepStr);
                 }
-                catch (Exception)
-                {
-                    Status.CanRename = false;
-                }
+                catch (Exception) { }
                 return data;
             }
             set

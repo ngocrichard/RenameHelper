@@ -63,7 +63,7 @@ namespace RenameHelper.ViewModels
         private void ImplementsCommands()
         {
             SelectFilesCmd = new RelayCommand<object>(SelectFilesExcute);
-            RenameCmd = new RelayCommand<object>(RenameExcute);
+            RenameCmd = new RelayCommand<object>(RenameExcute, CanRename);
             UndoCmd = new RelayCommand<object>(UndoExcute, obj => History.Count > 0);
             CreditCmd = new RelayCommand<object>(CreditExcute);
         }
@@ -108,6 +108,11 @@ namespace RenameHelper.ViewModels
             {
                 RaisePropertyChanged("History");
             }
+        }
+
+        private bool CanRename(object obj)
+        {
+            return !string.IsNullOrEmpty(CurrentDirectory) && Status.CanRename;
         }
         #endregion
 

@@ -26,7 +26,6 @@
 
         <Style x:Key="basicTextBox" TargetType="{x:Type TextBox}">
             <Setter Property="Padding" Value="5,5,5,5"/>
-            <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="0,0,0,0"/>
         </Style>
 
@@ -43,7 +42,8 @@
                 <Trigger Property="Validation.HasError" Value="True">
                     <Setter Property="Background" Value="LightPink"/>
                     <Setter Property="ToolTip"
-                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)/ErrorContent}"/>
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                                    Path=(Validation.Errors)/ErrorContent}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>

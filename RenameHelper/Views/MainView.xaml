@@ -8,145 +8,110 @@
         mc:Ignorable="d"
         Title="Rename Helper" Height="400" Width="650"
         WindowStartupLocation="CenterScreen"
-        Background="LightGray"
-        WindowStyle="None"
-        ResizeMode="CanResize"
-        AllowsTransparency="True"
-        Margin="0,0,0,0" Padding="0,0,0,0"
+        ResizeMode="CanMinimize"
         DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=MainViewModel}">
-    
     <Window.Resources>
         <!-- Basic styles -->
         <Style TargetType="{x:Type Border}" BasedOn="{StaticResource basicBorder}"/>
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource basicButton}"/>
         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource basicTextBox}"/>
         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource basicTextBlock}"/>
-        
-        <!-- Title bar buttons -->
-        <Style x:Key="titlebarButtons" TargetType="{x:Type Button}"
-               BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Margin" Value="0,0,0,0"/>
-        </Style>
-        
-        <!-- Command buttons -->
-        <Style x:Key="commandButtons" TargetType="{x:Type Button}"
+
+        <!-- Bottom buttons -->
+        <Style x:Key="bottomButtons" TargetType="{x:Type Button}"
                BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Width" Value="70"/>
-            <Setter Property="Height" Value="30"/>
         </Style>
     </Window.Resources>
-    
+
     <!-- Layout -->
-    <DockPanel LastChildFill="True" Margin="0,0,0,0">
-        <Border Padding="0,0,0,0" Margin="0,0,0,0" DockPanel.Dock="Top">
-            <Grid Margin="0,0,0,0">
+    <Grid Margin="3,3,3,3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            
+            <Border Grid.Column="0">
+                <Button Content="Select files"
+                        Command="{Binding SelectFilesCmd}"/>
+            </Border>
+
+            <Border Grid.Column="1">
+                <TextBox x:Name="tBoxDirectory"
+                         IsReadOnly="True"
+                         Text="{Binding CurrentDirectory, Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0">
+                <Grid>
+                    <ListView x:Name="lvFiles"
+                              ItemsSource="{Binding CurrentFiles, Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}"
+                              DisplayMemberPath="Name">
+                    </ListView>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <TextBlock Text="Rename Helper"/>
-                </StackPanel>
+                <Grid Grid.Column="0">
+                    <StackPanel Orientation="Vertical">
+                        <Border>
+                            <TabControl Height="250">
+                                <TabItem Header="Basic">
+                                    <local:BasicTabView x:Name="basicTab"/>
+                                </TabItem>
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button x:Name="btnMinimize" Content="Min" Click="OnMinimize"/>
-                    <Button x:Name="btnMaximize" Content="Max" Click="OnMaximize"/>
-                    <Button x:Name="btnExit" Content="Exit" Click="OnExit"/>
-                </StackPanel>
-            </Grid>
-        </Border>
+                                <TabItem Header="Advanced">
+                                    <local:AdvancedTabView x:Name="advancedTab"/>
+                                </TabItem>
+                            </TabControl>
+                        </Border>
 
-        <Border Padding="0,0,0,0" Margin="0,0,0,0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <Border Grid.Column="0">
-                        <Button Content="Select files"
-                        Width="100" Height="35"
-                        Command="{Binding SelectFilesCmd}" />
-                    </Border>
-
-                    <Border Grid.Column="1">
-                        <TextBox x:Name="tBoxDirectory"
-                         IsReadOnly="True"
-                         Text="{Binding CurrentDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </Border>
-                </Grid>
-
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Border Grid.Column="0">
-                        <Grid>
-                            <ListView x:Name="lvFiles"
-                              ItemsSource="{Binding CurrentFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              DisplayMemberPath="Name">
-                            </ListView>
-                        </Grid>
-                    </Border>
-
-                    <Grid Grid.Column="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Grid Grid.Column="0">
-                            <StackPanel Orientation="Vertical">
-                                <Border>
-                                    <TabControl Height="250">
-                                        <TabItem Header="Basic">
-                                            <local:BasicTabView x:Name="basicTab"/>
-                                        </TabItem>
-
-                                        <TabItem Header="Advanced">
-                                            <local:AdvancedTabView x:Name="advancedTab"/>
-                                        </TabItem>
-                                    </TabControl>
-                                </Border>
-
-                                <Border>
-                                    <Grid Margin="0,0,0,0">
-                                        <StackPanel Grid.Column="0" Orientation="Horizontal"
+                        <Border>
+                            <Grid Margin="0,0,0,0">
+                                <StackPanel Grid.Column="0" Orientation="Horizontal"
                                             HorizontalAlignment="Center">
-                                            <Border>
-                                                <Button x:Name="btnRename" Content="Rename"
+                                    <Border>
+                                        <Button x:Name="btnRename" Content="Rename"
                                                 Command="{Binding RenameCmd}"
-                                                Style="{StaticResource commandButtons}"
-                                                IsEnabled="{Binding Status.CanRename}"/>
-                                            </Border>
-                                            <Border>
-                                                <Button x:Name="btnUndo" Content="Undo"
+                                                Style="{StaticResource bottomButtons}"/>
+                                    </Border>
+                                    <Border>
+                                        <Button x:Name="btnUndo" Content="Undo"
                                                 Command="{Binding UndoCmd}"
-                                                Style="{StaticResource commandButtons}"/>
-                                            </Border>
-                                            <Border Grid.Column="1">
-                                                <Button Content="Credit"
+                                                Style="{StaticResource bottomButtons}"/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <Button Content="Credit"
                                                 HorizontalAlignment="Right"
                                                 Command="{Binding CreditCmd}"
-                                                Style="{StaticResource commandButtons}"/>
-                                            </Border>
-                                        </StackPanel>
-                                    </Grid>
-                                </Border>
-                            </StackPanel>
-                        </Grid>
-                    </Grid>
+                                                Style="{StaticResource bottomButtons}"/>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
                 </Grid>
             </Grid>
-        </Border>
-    </DockPanel>
+        </Grid>
+    </Grid>
 </Window>
