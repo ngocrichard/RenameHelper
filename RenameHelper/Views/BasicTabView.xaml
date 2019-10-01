@@ -71,16 +71,14 @@
                             <RadioButton GroupName="IndexPlacement"
                                      Content="Prefix"
                                      IsChecked="{Binding Mode.IndexMode, Mode=TwoWay,
-                                                 Converter={StaticResource IndexPlacementToBoolean},
-                                                 ConverterParameter=Prefix}"/>
+                                Converter={StaticResource IndexPlacementToBoolean}, ConverterParameter=Prefix}"/>
                         </Border>
 
                         <Border Grid.Column="1">
                             <RadioButton GroupName="IndexPlacement"
                                      Content="Postfix"
                                      IsChecked="{Binding Mode.IndexMode, Mode=TwoWay,
-                                                 Converter={StaticResource IndexPlacementToBoolean},
-                                                 ConverterParameter=Postfix}"/>
+                                Converter={StaticResource IndexPlacementToBoolean}, ConverterParameter=Postfix}"/>
                         </Border>
                     </Grid>
                 </GroupBox>
@@ -104,8 +102,7 @@
                     <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
                         <TextBox x:Name="tboxName"
                                  Text="{Binding Name, Mode=TwoWay,
-                                        UpdateSourceTrigger=PropertyChanged,
-                                        ValidatesOnDataErrors=True}"
+                            UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                  Style="{StaticResource tboxName}"/>
                     </Border>
 
@@ -118,8 +115,7 @@
                                  Width="50"
                                  HorizontalAlignment="Left"
                                  Text="{Binding StartIndexStr, Mode=TwoWay,
-                                        UpdateSourceTrigger=PropertyChanged,
-                                        ValidatesOnDataErrors=True}"
+                            UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                  Style="{StaticResource validateTextBoxTemplate}"/>
                     </Border>
 
@@ -129,8 +125,7 @@
                             <TextBox x:Name="tboxCounter"
                                      Width="50" HorizontalAlignment="Left"
                                      Text="{Binding StepStr, Mode=TwoWay,
-                                            UpdateSourceTrigger=PropertyChanged,
-                                            ValidatesOnDataErrors=True}"
+                                UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                      Style="{StaticResource validateTextBoxTemplate}"/>
                         </StackPanel>
                     </Border>
