@@ -25,7 +25,7 @@
     </Window.Resources>
 
     <!-- Layout -->
-    <Grid Margin="3,3,3,3">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
@@ -46,7 +46,7 @@
                 <TextBox x:Name="tBoxDirectory"
                          IsReadOnly="True"
                          Text="{Binding CurrentDirectory, Mode=TwoWay,
-                                UpdateSourceTrigger=PropertyChanged}"/>
+                    UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
         </Grid>
 
@@ -60,7 +60,7 @@
                 <Grid>
                     <ListView x:Name="lvFiles"
                               ItemsSource="{Binding CurrentFiles, Mode=TwoWay,
-                                            UpdateSourceTrigger=PropertyChanged}"
+                        UpdateSourceTrigger=PropertyChanged}"
                               DisplayMemberPath="Name">
                     </ListView>
                 </Grid>

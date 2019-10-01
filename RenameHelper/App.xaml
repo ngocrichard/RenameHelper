@@ -43,7 +43,7 @@
                     <Setter Property="Background" Value="LightPink"/>
                     <Setter Property="ToolTip"
                             Value="{Binding RelativeSource={x:Static RelativeSource.Self},
-                                    Path=(Validation.Errors)/ErrorContent}"/>
+                        Path=(Validation.Errors)/ErrorContent}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
