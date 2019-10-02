@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RenameHelper.Views"
         xmlns:cv="clr-namespace:RenameHelper.Views.Converters"
         mc:Ignorable="d"
-        Title="Rename Helper" Height="400" Width="650"
+        Title="Rename Helper" Height="400" Width="700"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
         DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=MainViewModel}">
@@ -20,7 +20,7 @@
         <!-- Bottom buttons -->
         <Style x:Key="bottomButtons" TargetType="{x:Type Button}"
                BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Width" Value="70"/>
+            <Setter Property="Width" Value="85"/>
         </Style>
     </Window.Resources>
 
@@ -51,67 +51,74 @@
         </Grid>
 
         <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="370"/>
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0">
+            <Border Grid.Row="0" Grid.Column="0">
                 <Grid>
-                    <ListView x:Name="lvFiles"
-                              ItemsSource="{Binding CurrentFiles, Mode=TwoWay,
-                        UpdateSourceTrigger=PropertyChanged}"
-                              DisplayMemberPath="Name">
-                    </ListView>
+                    <local:FilesView x:Name="filesView" />
                 </Grid>
             </Border>
 
-            <Grid Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <Border Grid.Row="0" Grid.Column="1">
+                <TabControl Height="250">
+                    <TabItem Header="Basic">
+                        <local:BasicTabView x:Name="basicTab"/>
+                    </TabItem>
 
-                <Grid Grid.Column="0">
-                    <StackPanel Orientation="Vertical">
-                        <Border>
-                            <TabControl Height="250">
-                                <TabItem Header="Basic">
-                                    <local:BasicTabView x:Name="basicTab"/>
-                                </TabItem>
+                    <TabItem Header="Advanced">
+                        <local:AdvancedTabView x:Name="advancedTab"/>
+                    </TabItem>
+                </TabControl>
+            </Border>
 
-                                <TabItem Header="Advanced">
-                                    <local:AdvancedTabView x:Name="advancedTab"/>
-                                </TabItem>
-                            </TabControl>
-                        </Border>
+            <Border Grid.Row="1" Grid.Column="0">
+                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Border>
+                        <Button x:Name="btnMoveUp" Content="Move Up"
+                                Style="{StaticResource bottomButtons}"
+                                Command="{Binding FilesViewModel.MoveFileUpCmd}"/>
+                    </Border>
+                    <Border>
+                        <Button x:Name="btnMoveDown" Content="Move Down"
+                                Style="{StaticResource bottomButtons}"
+                                Command="{Binding FilesViewModel.MoveFileDownCmd}"/>
+                    </Border>
+                    <Border Grid.Column="1">
+                        <Button Content="Remove"
+                                Style="{StaticResource bottomButtons}"
+                                Command="{Binding FilesViewModel.RemoveFileCmd}"/>
+                    </Border>
+                </StackPanel>
+            </Border>
 
-                        <Border>
-                            <Grid Margin="0,0,0,0">
-                                <StackPanel Grid.Column="0" Orientation="Horizontal"
-                                            HorizontalAlignment="Center">
-                                    <Border>
-                                        <Button x:Name="btnRename" Content="Rename"
-                                                Command="{Binding RenameCmd}"
-                                                Style="{StaticResource bottomButtons}"/>
-                                    </Border>
-                                    <Border>
-                                        <Button x:Name="btnUndo" Content="Undo"
-                                                Command="{Binding UndoCmd}"
-                                                Style="{StaticResource bottomButtons}"/>
-                                    </Border>
-                                    <Border Grid.Column="1">
-                                        <Button Content="Credit"
-                                                HorizontalAlignment="Right"
-                                                Command="{Binding CreditCmd}"
-                                                Style="{StaticResource bottomButtons}"/>
-                                    </Border>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </Grid>
-            </Grid>
+            <Border Grid.Row="1" Grid.Column="1">
+                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Border>
+                        <Button x:Name="btnRename" Content="Rename"
+                                Command="{Binding RenameCmd}"
+                                Style="{StaticResource bottomButtons}"/>
+                    </Border>
+                    <Border>
+                        <Button x:Name="btnUndo" Content="Undo"
+                                Command="{Binding UndoCmd}"
+                                Style="{StaticResource bottomButtons}"/>
+                    </Border>
+                    <Border Grid.Column="1">
+                        <Button Content="Credit"
+                                Command="{Binding CreditCmd}"
+                                Style="{StaticResource bottomButtons}"/>
+                    </Border>
+                </StackPanel>
+            </Border>
         </Grid>
     </Grid>
 </Window>

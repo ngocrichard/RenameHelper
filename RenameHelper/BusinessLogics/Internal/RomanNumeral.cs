@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RenameHelper.BusinessLogics.Helpers
+namespace RenameHelper.BusinessLogics.Internal
 {
     public class RomanNumeral
     {

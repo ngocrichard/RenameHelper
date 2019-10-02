@@ -1,4 +1,4 @@
-﻿namespace RenameHelper.BusinessLogics.Services
+﻿namespace RenameHelper.BusinessLogics
 {
     public interface IMessageBoxService
     {

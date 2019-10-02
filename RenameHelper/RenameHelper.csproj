@@ -70,43 +70,50 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BusinessLogics\ClientServiceFacade.cs" />
-    <Compile Include="BusinessLogics\Helpers\FileInfoService.cs" />
-    <Compile Include="BusinessLogics\Helpers\FileRenamer.cs" />
-    <Compile Include="BusinessLogics\Helpers\OpenFileService.cs" />
-    <Compile Include="BusinessLogics\Helpers\Renamer\DirectoryNameGenerator.cs" />
-    <Compile Include="BusinessLogics\Helpers\Renamer\RequestChecker.cs" />
-    <Compile Include="BusinessLogics\Helpers\RequestResolver.cs" />
-    <Compile Include="BusinessLogics\Helpers\Resolver\IndexResolver.cs" />
-    <Compile Include="BusinessLogics\Helpers\RomanNumeral.cs" />
-    <Compile Include="BusinessLogics\Services\CreditService.cs" />
-    <Compile Include="BusinessLogics\Services\ICreditService.cs" />
-    <Compile Include="BusinessLogics\Services\IMessageBoxService.cs" />
-    <Compile Include="BusinessLogics\Services\IRenameService.cs" />
-    <Compile Include="BusinessLogics\Services\ISelectFilesService.cs" />
-    <Compile Include="BusinessLogics\Services\IUndoService.cs" />
-    <Compile Include="BusinessLogics\Services\MessageBoxService.cs" />
-    <Compile Include="BusinessLogics\Services\RenameService.cs" />
-    <Compile Include="BusinessLogics\Services\SelectFilesService.cs" />
-    <Compile Include="BusinessLogics\Services\UndoService.cs" />
+    <Compile Include="BusinessLogics\MainServiceFacade.cs" />
+    <Compile Include="BusinessLogics\RenameServiceFacade.cs" />
+    <Compile Include="BusinessLogics\Internal\FileInfoService.cs" />
+    <Compile Include="BusinessLogics\Internal\FileRenamer.cs" />
+    <Compile Include="BusinessLogics\Internal\OpenFileService.cs" />
+    <Compile Include="BusinessLogics\Internal\Renamer\DirectoryNameGenerator.cs" />
+    <Compile Include="BusinessLogics\Internal\Renamer\RequestChecker.cs" />
+    <Compile Include="BusinessLogics\Internal\RequestResolver.cs" />
+    <Compile Include="BusinessLogics\Internal\Resolver\IndexResolver.cs" />
+    <Compile Include="BusinessLogics\Internal\RomanNumeral.cs" />
+    <Compile Include="BusinessLogics\CreditService.cs" />
+    <Compile Include="BusinessLogics\ICreditService.cs" />
+    <Compile Include="BusinessLogics\IListFilesService.cs" />
+    <Compile Include="BusinessLogics\IMessageBoxService.cs" />
+    <Compile Include="BusinessLogics\IRenameService.cs" />
+    <Compile Include="BusinessLogics\ISelectFilesService.cs" />
+    <Compile Include="BusinessLogics\IUndoService.cs" />
+    <Compile Include="BusinessLogics\ListFilesService.cs" />
+    <Compile Include="BusinessLogics\MessageBoxService.cs" />
+    <Compile Include="BusinessLogics\RenameService.cs" />
+    <Compile Include="BusinessLogics\Internal\SelectedFileInfoService.cs" />
+    <Compile Include="BusinessLogics\SelectFilesService.cs" />
+    <Compile Include="BusinessLogics\UndoService.cs" />
     <Compile Include="Commons\Enums\IndexPlacement.cs" />
     <Compile Include="Commons\Enums\RenameErrorInfo.cs" />
     <Compile Include="Commons\Exceptions\RenameErrorException.cs" />
     <Compile Include="Commons\IGetCopy.cs" />
+    <Compile Include="Commons\ThrowExeptionHandler.cs" />
     <Compile Include="Core\IContainer.cs" />
     <Compile Include="Commons\BaseObservable.cs" />
     <Compile Include="Commons\BaseValid.cs" />
     <Compile Include="Commons\ISetCopy.cs" />
     <Compile Include="Commons\RelayCommand.cs" />
     <Compile Include="Core\NinjectContainer.cs" />
-    <Compile Include="Models\CanRenameWrapper.cs" />
+    <Compile Include="Models\RenameStatus.cs" />
     <Compile Include="Models\MyFile.cs" />
     <Compile Include="Models\CommitedChange.cs" />
     <Compile Include="Models\BasicRequestData.cs" />
     <Compile Include="Models\BasicRequestMode.cs" />
     <Compile Include="ViewModels\AdvancedTabViewModel.cs" />
     <Compile Include="ViewModels\BasicTabViewModel.cs" />
+    <Compile Include="ViewModels\FilesViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Commons\GetPropertyFromChildHandler.cs" />
     <Compile Include="ViewModels\Validations\BasePropertyValidation.cs" />
     <Compile Include="ViewModels\Validations\BasicTabValidate.cs" />
     <Compile Include="ViewModels\Validations\StringToIntValidation.cs" />
@@ -119,8 +126,12 @@
     <Compile Include="Views\BasicTabView.xaml.cs">
       <DependentUpon>BasicTabView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Converters\InvertBoolean.cs" />
+    <Compile Include="Views\Converters\IconToImageSource.cs" />
     <Compile Include="Views\Converters\IndexPlacementToBoolean.cs" />
+    <Compile Include="Views\Converters\InvertBoolean.cs" />
+    <Compile Include="Views\FilesView.xaml.cs">
+      <DependentUpon>FilesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -158,6 +169,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BasicTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FilesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 
-namespace RenameHelper.BusinessLogics.Helpers
+namespace RenameHelper.BusinessLogics.Internal
 {
     public class OpenFileService
     {

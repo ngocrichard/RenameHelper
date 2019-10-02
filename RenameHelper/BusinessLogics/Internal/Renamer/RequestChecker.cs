@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using RenameHelper.Models;
 
-namespace RenameHelper.BusinessLogics.Helpers.Renamer
+namespace RenameHelper.BusinessLogics.Internal.Renamer
 {
     public class RequestChecker
     {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using RenameHelper.ViewModels;
-using RenameHelper.BusinessLogics.Services;
+using RenameHelper.BusinessLogics;
 
 namespace RenameHelper.Core
 {
@@ -44,6 +44,7 @@ namespace RenameHelper.Core
             kernel.Bind<IUndoService>().To<UndoService>();
             kernel.Bind<ICreditService>().To<CreditService>();
             kernel.Bind<IMessageBoxService>().To<MessageBoxService>();
+            kernel.Bind<IListFilesService>().To<ListFilesService>();
         }
         #endregion
     }

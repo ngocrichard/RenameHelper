@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using RenameHelper.BusinessLogics.Helpers;
+using RenameHelper.BusinessLogics.Internal;
 using RenameHelper.Models;
 
-namespace RenameHelper.BusinessLogics.Services
+namespace RenameHelper.BusinessLogics
 {
     public class SelectFilesService : ISelectFilesService
     {

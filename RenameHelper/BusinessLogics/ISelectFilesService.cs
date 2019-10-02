@@ -1,7 +1,7 @@
 ﻿using RenameHelper.Models;
 using System.Collections.ObjectModel;
 
-namespace RenameHelper.BusinessLogics.Services
+namespace RenameHelper.BusinessLogics
 {
     public interface ISelectFilesService
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RenameHelper.BusinessLogics.Helpers.Resolver
+namespace RenameHelper.BusinessLogics.Internal.Resolver
 {
     public class IndexResolver
     {

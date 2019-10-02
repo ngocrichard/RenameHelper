@@ -4,10 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RenameHelper.Views"
+             xmlns:cv="clr-namespace:RenameHelper.Views.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=BasicTabViewModel}">
     <UserControl.Resources>
+        <!-- Converter to handle radio buttons -->
+        <cv:IndexPlacementToBoolean x:Key="IndexPlacementToBoolean"/>
+        
         <!-- Basic styles -->
         <Style TargetType="{x:Type Border}" BasedOn="{StaticResource basicBorder}"/>
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource basicButton}"/>

@@ -7,10 +7,9 @@
              StartupUri="Views/MainView.xaml">
     <Application.Resources>
         <!-- Get ViewModel by this locator-->
-        <vm:ViewModelLocator x:Key="ViewModelLocator"/>
+        <x:Static Member="vm:ViewModelLocator.Instance" x:Key="ViewModelLocator"/>
         
         <!-- Converter for Views -->
-        <cv:IndexPlacementToBoolean x:Key="IndexPlacementToBoolean"/>
         <cv:InvertBoolean x:Key="InvertBoolean"/>
         
         <!-- Styles -->

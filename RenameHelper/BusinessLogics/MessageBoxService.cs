@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace RenameHelper.BusinessLogics.Services
+namespace RenameHelper.BusinessLogics
 {
     public class MessageBoxService : IMessageBoxService
     {

@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using RenameHelper.BusinessLogics.Helpers;
+using RenameHelper.BusinessLogics.Internal;
 using RenameHelper.Models;
 
-namespace RenameHelper.BusinessLogics.Services
+namespace RenameHelper.BusinessLogics
 {
     public class RenameService : IRenameService
     {
@@ -39,7 +39,7 @@ namespace RenameHelper.BusinessLogics.Services
                 var newFile = fileInfoService.GetMyFile(Path.Combine(directory, newFileName));
                 currentFiles.Add(newFile);
             }
-            // Return committed change
+            // ReturUserControl1.xamln committed change
             var change = new CommittedChange(directory, currentFileNames, newFileNames, data.GetCopy(), mode.GetCopy());
             return change;
         }

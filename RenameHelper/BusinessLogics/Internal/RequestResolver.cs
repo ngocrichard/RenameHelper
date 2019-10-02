@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using RenameHelper.BusinessLogics.Helpers.Resolver;
+using RenameHelper.BusinessLogics.Internal.Resolver;
 using RenameHelper.Models;
 
-namespace RenameHelper.BusinessLogics.Helpers
+namespace RenameHelper.BusinessLogics.Internal
 {
     public class RequestResolver
     {

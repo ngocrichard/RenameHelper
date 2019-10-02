@@ -22,7 +22,6 @@ namespace RenameHelper.ViewModels
 
         #region Properties
         public RenameStatus Status { get; set; }
-        public ObservableCollection<MyFile> CurrentFiles { get; set; }
         public string CurrentDirectory { get; set; }
         public Stack<CommittedChange> History { get; }
         #endregion
@@ -30,27 +29,30 @@ namespace RenameHelper.ViewModels
         #region Dependencies
         public BasicTabViewModel BasicTabViewModel { get; }
         public AdvancedTabViewModel AdvancedTabViewModel { get; }
-        private readonly ClientServiceFacade clientServices;
+        public FilesViewModel FilesViewModel { get; }
+        private readonly MainServiceFacade clientServices;
         private readonly ValidationFacade validations;
         #endregion
 
         #region Constructor
-        public MainViewModel(ClientServiceFacade clientServices, ValidationFacade validations,
-            BasicTabViewModel basicTabViewModel, AdvancedTabViewModel advancedTabViewModel)
+        public MainViewModel(MainServiceFacade clientServices, ValidationFacade validations,
+            BasicTabViewModel basicTabViewModel, AdvancedTabViewModel advancedTabViewModel,
+            FilesViewModel filesViewModel)
         {
             /// Inject dependencies
             this.BasicTabViewModel = basicTabViewModel;
             this.AdvancedTabViewModel = advancedTabViewModel;
+            this.FilesViewModel = filesViewModel;
             this.clientServices = clientServices;
             this.validations = validations;
 
             /// Initialize properties
             Status = basicTabViewModel.Status;
-            CurrentFiles = new ObservableCollection<MyFile>();
             History = new Stack<CommittedChange>();
 
             RegisterValidations();
             ImplementsCommands();
+            HandleChildEvents();
         }
 
         /// Register validation for properties
@@ -67,18 +69,28 @@ namespace RenameHelper.ViewModels
             UndoCmd = new RelayCommand<object>(UndoExcute, obj => History.Count > 0);
             CreditCmd = new RelayCommand<object>(CreditExcute);
         }
+
+        private void HandleChildEvents()
+        {
+            FilesViewModel.GetDirectory += (obj, e) => CurrentDirectory;
+            FilesViewModel.ThrowException += (obj, message) =>
+                clientServices.MessageBoxService.Show(message, ERROR_CAPTION);
+        }
         #endregion
 
         #region Commands
+
+        #region Interfaces
         public ICommand SelectFilesCmd { get; set; }
         public ICommand RenameCmd { get; set; }
         public ICommand UndoCmd { get; set; }
         public ICommand CreditCmd { get; set; }
+        #endregion
 
         #region Select files command
         private void SelectFilesExcute(object obj)
         {
-            string newDirectory = clientServices.SelectFiles.SelectFiles(CurrentFiles);
+            string newDirectory = clientServices.SelectFilesService.SelectFiles(FilesViewModel.CurrentFiles);
             if (!string.IsNullOrEmpty(newDirectory))
                 CurrentDirectory = newDirectory;
         }
@@ -89,20 +101,20 @@ namespace RenameHelper.ViewModels
         {
             try
             {
-                var commitedChange = clientServices.Rename.Rename(CurrentDirectory, CurrentFiles,
+                var commitedChange = clientServices.RenameServices.Rename(CurrentDirectory, FilesViewModel.CurrentFiles,
                     BasicTabViewModel.Data, BasicTabViewModel.Mode);
                 // Save request to history if successfully
                 History.Push(commitedChange);
                 // Update state
-                clientServices.MessageBox.Show("All files were renamed successfully!", SUCCESS_CAPTION);
+                clientServices.MessageBoxService.Show("All files were renamed successfully!", SUCCESS_CAPTION);
             }
             catch (RenameErrorException exception)
             {
-                clientServices.MessageBox.Show(exception.Message, ERROR_CAPTION);
+                clientServices.MessageBoxService.Show(exception.Message, ERROR_CAPTION);
             }
             catch (Exception)
             {
-                clientServices.MessageBox.Show("Something when wrong!", ERROR_CAPTION);
+                clientServices.MessageBoxService.Show("Something when wrong!", ERROR_CAPTION);
             }
             finally
             {
@@ -125,20 +137,20 @@ namespace RenameHelper.ViewModels
             try
             {
                 var lastChange = History.Pop();
-                clientServices.Undo.Undo(CurrentFiles, lastChange);
+                clientServices.RenameServices.Undo(FilesViewModel.CurrentFiles, lastChange);
                 // Restore state if success
                 CurrentDirectory = lastChange.Directory;
                 BasicTabViewModel.Mode = lastChange.Mode;
                 BasicTabViewModel.Data = lastChange.Data;
-                clientServices.MessageBox.Show("Undo successfully!", SUCCESS_CAPTION);
+                clientServices.MessageBoxService.Show("Undo successfully!", SUCCESS_CAPTION);
             }
             catch (RenameErrorException exception)
             {
-                clientServices.MessageBox.Show(exception.Message, ERROR_CAPTION);
+                clientServices.MessageBoxService.Show(exception.Message, ERROR_CAPTION);
             }
             catch (Exception)
             {
-                clientServices.MessageBox.Show("Something when wrong!", ERROR_CAPTION);
+                clientServices.MessageBoxService.Show("Something when wrong!", ERROR_CAPTION);
                 History.Clear();
             }
             finally
@@ -151,7 +163,7 @@ namespace RenameHelper.ViewModels
         #region Credit command
         private void CreditExcute(object obj)
         {
-            clientServices.Credit.ShowCredit();
+            clientServices.CreditService.ShowCredit();
         }
         #endregion
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace RenameHelper.BusinessLogics.Services
+namespace RenameHelper.BusinessLogics
 {
     public interface IUndoService
     {

@@ -13,10 +13,23 @@ namespace RenameHelper.ViewModels
         #region Fields
         private readonly NinjectContainer container;
         private MainViewModel mainViewModel;
+        private static ViewModelLocator instance;
+        #endregion
+
+        #region Properties
+        public static ViewModelLocator Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new ViewModelLocator();
+                return instance;
+            }
+        }
         #endregion
 
         #region Constructors
-        public ViewModelLocator()
+        private ViewModelLocator()
         {
             container = new NinjectContainer();
         }
@@ -31,6 +44,11 @@ namespace RenameHelper.ViewModels
                     mainViewModel = container.Get<MainViewModel>();
                 return mainViewModel;
             }
+        }
+
+        public FilesViewModel FilesViewModel
+        {
+            get => mainViewModel.FilesViewModel;
         }
 
         public BasicTabViewModel BasicTabViewModel
